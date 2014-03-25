@@ -20,7 +20,10 @@ int pop(); //Funktion zum lesen vom Stack
 void push(int wert); //Funktion zum schreiben auf stack
 void print_stack(); //Funktion um Stack komplett auszugeben
 int contr_brackets(char *opstring);
-double solve_pattern(char *opstring, start, end);
+double solve_pattern(char *opstring,int start,int end);
+void parse(char **string, double **ptr_num, double **ptr_op);
+int is_digit(char c);
+
 //-----------------------------------------------------------------
 //			MAIN
 //-----------------------------------------------------------------
@@ -30,7 +33,9 @@ int main(int argc, char *argv[])
 	int s, i;
 
 	if(contr_brackets(argv[1]) == -1) return EXIT_FAILURE;
+	solve_pattern(argv[1],0,strlen(argv[1]));
 
+	//printf("\n\n isdigit Test: %d\n",is_digit('A'));
 	print_stack();
 	return 0;
 }
@@ -44,7 +49,7 @@ int pop()
 
 	if(pos > -1)
 		return stack[pos--];
-	//fprintf(stderr,"Stack empty!\n");
+	fprintf(stderr,"Stack empty!\n");
 	return -2;
 }
 
@@ -74,11 +79,8 @@ int contr_brackets(char *opstring)
 
 	len = strlen(opstring);
 
-	print_stack();
-
 	for(i=0;i<=len;i++)
 	{
-		//if(!(strchr(argv[1], '(') && strchr(argv[1], ')'))) break;
 
 		if(opstring[i] == '[') 
 		{
@@ -104,17 +106,34 @@ int contr_brackets(char *opstring)
 	return 0;
 }
 
-double solve_pattern(char *opstring, start, end)
+double solve_pattern(char *opstring,int start,int end)
 {
 	double result=0;
 	double *ptr_num, *ptr_op;
 
-	parse(*string, &ptr_num, &op)
+	parse(&opstring, &ptr_num, &ptr_op);
 
+	return 0;
+}
+
+void parse(char **string, double **ptr_num, double **ptr_op)
+{
+	int c;
+	char *p;
+
+	p = *string;
+
+	while(*p != '\0')
+	{
+		printf("test %c\n",*p);
+		p++;
+	}
 
 }
 
-void parse(char *string, double **ptr_num, double **ptr_op)
+int is_digit(char c)
 {
+	if((c >= 48) && (c <=57)) return 1;
 
+	return 0;
 }
