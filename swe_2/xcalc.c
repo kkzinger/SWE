@@ -1,3 +1,5 @@
+
+
 /*
 
 	File: xcalc.c
@@ -10,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #define STACK_SIZE 10
 
@@ -20,20 +23,21 @@ int pop(); //Funktion zum lesen vom Stack
 void push(int wert); //Funktion zum schreiben auf stack
 void print_stack(); //Funktion um Stack komplett auszugeben
 int contr_brackets(char *opstring);
-double solve_pattern(char *opstring,int start,int end);
-void parse(char **string, double **ptr_num, double **ptr_op);
+double solve_pattern(char *opstring, int start, int end);
+int parse(char **string, double **ptr_num, char **ptr_op);
 int is_digit(char c);
 
 //-----------------------------------------------------------------
 //			MAIN
 //-----------------------------------------------------------------
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
 	int s, i;
+	double result;
 
 	if(contr_brackets(argv[1]) == -1) return EXIT_FAILURE;
-	solve_pattern(argv[1],0,strlen(argv[1]));
+	result = solve_pattern(argv[1],0,strlen(argv[1]));
 
 	//printf("\n\n isdigit Test: %d\n",is_digit('A'));
 	print_stack();
@@ -77,8 +81,8 @@ int contr_brackets(char *opstring)
 {
 	int i, s, len;
 
-	len = strlen(opstring);
-
+	len = (int) strlen(opstring);
+	printf("strlen bracket test %d\n",len);
 	for(i=0;i<=len;i++)
 	{
 
@@ -106,28 +110,65 @@ int contr_brackets(char *opstring)
 	return 0;
 }
 
-double solve_pattern(char *opstring,int start,int end)
+double solve_pattern(char *opstring, int start, int end)
 {
+	int len;
 	double result=0;
-	double *ptr_num, *ptr_op;
+	double *ptr_num;
+	char *ptr_op;
+
+	len = (int) strlen(opstring);
+	ptr_num = (double*) malloc((sizeof(double)*len)/2+1);	//Worst case every number is one digit long ex. 6+4+5 ->3 doubles needed
+	if(ptr_num == NULL) return fprintf(stdout,"Malloc was not able to allocate memory");
+
+	ptr_op = (char*) malloc(len/2);
+	if(ptr_op == NULL) return fprintf(stdout,"Malloc was not able to allocate memory");
 
 	parse(&opstring, &ptr_num, &ptr_op);
 
 	return 0;
 }
 
-void parse(char **string, double **ptr_num, double **ptr_op)
+int parse(char **string, double **ptr_num, char **ptr_op)
 {
-	int c;
-	char *p;
+	int len, i;
+	double cnt;
+	char *p, *op;
+	double *num;
 
 	p = *string;
+	//printf("kontrolle: %s",p);
+	num = *ptr_num;
+	op = *ptr_op;
 
-	while(*p != '\0')
+	len = (int) strlen(p);
+
+	for(i=len-1;i>=0;i--)
 	{
-		printf("test %c\n",*p);
-		p++;
+		cnt = 0;
+		while(is_digit(p[i]) || p[i] == '.')
+		{
+			if(p[i] == '.')
+			{
+				//printf("cnt: %lf", pow(10,cnt));
+				*num = *num / pow(10,cnt);	//If there is a comma, move the already read digits behind it
+				cnt = 0;
+			}else
+			{
+				//printf("vorher: %lf \n p[i]: %d\n", *num, p[i]%48);
+				*num = *num + (p[i]%48) * pow(10,cnt);
+				//printf("nacher: %lf \n", *num);
+				cnt += 1;
+			}
+
+			if(!(is_digit(p[i-1]) || p[i-1] == '.')) num += 1;
+
+			i -= 1;
+		}
 	}
+
+	printf("after parse: %lf\n", *num);
+	return 0;
 
 }
 
