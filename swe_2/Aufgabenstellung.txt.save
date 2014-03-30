@@ -1,0 +1,21 @@
+Struktur
+
+Messung
+Ort
+Zeit
+Messwert
+
+Listen Struktur
+
+Head (Variable len -ist 0 bei beginn von liste)
+	first pointer
+	last pointer
+
+
+Durchspielen von append first und last und
+
+
+FILES
+
+	Beispiel my_fcopy [quelle] [ziel]
+	

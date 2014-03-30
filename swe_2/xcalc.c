@@ -160,14 +160,24 @@ int parse(char **string, double **ptr_num, char **ptr_op)
 				//printf("nacher: %lf \n", *num);
 				cnt += 1;
 			}
+			if(!(is_digit(p[i-1]) || p[i-1] == '.')) num++;
 
-			if(!(is_digit(p[i-1]) || p[i-1] == '.')) num += 1;
-
-			i -= 1;
+			i--;
+		}
+		switch(p[i])
+		{
+			case '+': *op = p[i--]; op++; break;
+			case '-': *op = p[i--]; op++; break;
+			case '*': *op = p[i--]; op++; break;
+			case '/': *op = p[i--]; op++; break;
 		}
 	}
-
-	printf("after parse: %lf\n", *num);
+	printf("after parse op: %c\n", **(ptr_op));
+	printf("after parse: %lf\n", **(ptr_num);
+	/*printf("after parse op: %c\n", (ptr_op+1)));
+	printf("after parse: %lf\n", *(*(ptr_num+1)));
+	printf("after parse op: %c\n", *(*(ptr_op+2)));
+	printf("after parse: %lf\n", *(*(ptr_num+2)));*/
 	return 0;
 
 }
