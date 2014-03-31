@@ -67,6 +67,8 @@ int main()
 	insert_node(head,head->last,ptrc);
 	print_list(head);
 
+	printf("DATA: %d",*((int*)head->first->data));
+
 	return 0;
 }
 
