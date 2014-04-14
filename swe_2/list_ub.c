@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "my_list.h"
+/*
 //-----------------------------------------------------
 //			STRUCTS
 //----------------------------------------------------
@@ -34,7 +35,7 @@ int append_back(HEAD *head, void *data);	 //Appends Node at back end of the list
 int append_front(HEAD *head, void *data);	//Appends Node at front of the list
 void print_list(HEAD *head);	//prints whole list
 int isfirst_node(HEAD *head);	//Check if there is only one empty node in list. Like the situation after init_list
-
+*/
 //----------------------------------------------------
 //			MAIN
 //----------------------------------------------------
@@ -67,11 +68,15 @@ int main()
 	insert_node(head,head->last,ptrc);
 	print_list(head);
 
-	printf("DATA: %d",*((int*)head->first->data));
+	printf("DATA: %d\n",*((int*)head->first->data));
 
+	del_node(head, head->first->next);
+	print_list(head);
+
+	del_list(head);
 	return 0;
 }
-
+/*
 //---------------------------------------------------
 //			FUNCTIONS
 //----------------------------------------------------
@@ -219,3 +224,4 @@ int isfirst_node(HEAD *head)	//Check if there is only one empty node in list. Li
 
 	return 0;
 }
+*/

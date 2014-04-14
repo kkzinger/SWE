@@ -18,7 +18,7 @@ HEAD *init_list()	//Function sets up a List Head and returns pointer to list hea
 
 	p->first = n;
 	p->last = n;
-	p->length += 1;
+	p->length ++;
 
 	return p;
 }
@@ -60,7 +60,7 @@ int insert_node(HEAD *head, NODE *act, void *data) //Insert node after Act(ual)-
 	act->next = p;
 	p->data = data;
 
-	head->length +=1;
+	head->length ++;
 
 	return EXIT_SUCCESS;
 }
@@ -103,7 +103,7 @@ int append_front(HEAD *head, void *data)	//Appends Node at front of the list
 	head->first = p;
 	p->data = data;
 
-	head->length +=1;
+	head->length ++;
 
 	return EXIT_SUCCESS;
 }
@@ -132,7 +132,7 @@ void print_list(HEAD *head)	//prints whole list
 		printf("Data:   %p\n\n",p->data);
 
 		p = p->next;
-		i += 1;
+		i ++;
 	}
 
 	printf("----- NODE - %d -----\n",i);
@@ -147,3 +147,57 @@ int isfirst_node(HEAD *head)	//Check if there is only one empty node in list. Li
 
 	return 0;
 }
+int del_node(HEAD *head, NODE *act)	//Delete act(ual) node and set the corect pointers at neighbor nodes and head
+{
+
+	//Eventually insert a check here to examine if the node is member of the list discribed by head
+	//Something like ismember_node(...)
+
+	if(act == head->first)	//Deleting first list node
+	{
+		act->next->prev = NULL;
+		head->first = act->next;
+
+	}else if(act == head->last)	//Deleting last list node
+	{
+		act->prev->next = NULL;
+		head->last = act->prev;
+
+	}else				//Deleting list node in the middle of list
+	{
+		act->next->prev = act->prev;
+		act->prev->next = act->next;
+	}
+
+	head->length --;
+
+	return EXIT_SUCCESS;
+}
+int del_list(HEAD *head)	//Delete whole list, free all allocated memory
+{
+	NODE *p,*h;
+	int i=1;
+
+	p = head->first;
+
+	while(p->next != NULL)
+	{
+		h = p->next;
+		free(p);
+		p = h;
+		i++;
+	}
+	h = p->next;
+	free(p);
+	p = h;
+	i++;
+
+	if(i != head->length)	return EXIT_FAILURE;
+
+	free(head);
+
+	return EXIT_SUCCESS;
+}
+
+
+

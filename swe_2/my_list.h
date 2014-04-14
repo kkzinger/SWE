@@ -46,9 +46,9 @@ int append_back(HEAD *head, void *data);	 //Appends Node at back end of the list
 int append_front(HEAD *head, void *data);	//Appends Node at front of the list
 void print_list(HEAD *head);	//prints whole list
 int isfirst_node(HEAD *head);	//Check if there is only one empty node in list. Like the situation after init_list
+int del_node(HEAD *head, NODE *act);     //Delete act(ual) node and set the corect pointers at neighbor nodes and head
+int del_list(HEAD *head);        //Delete whole list, free all allocated memory
 
-//---------------------------------------------------
-//			FUNCTIONS
-//----------------------------------------------------
+
 
 #endif
