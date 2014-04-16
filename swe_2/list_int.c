@@ -23,6 +23,11 @@
 	typedef struct list_head HEAD;
 
 
+	HEAD *init();
+	NODE *new_node();
+	int append_front(HEAD *xyz,int *d);
+
+
 
 	/*------------------------------------------------
 	--------------------- MAIN --------------------
@@ -32,7 +37,7 @@
 	{
 		HEAD *list;
 
-		if((list = init()) == NULL) printf("FEHLER");;
+		if((list = init()) == NULL) printf("FEHLER");
 
 		return EXIT_SUCCESS;
 	}
