@@ -14,11 +14,8 @@ HEAD *init_list()	//Function sets up a List Head and returns pointer to list hea
 
 	p->length = 0;
 
-	if((n = new_node()) == NULL) return NULL;
-
-	p->first = n;
-	p->last = n;
-	p->length ++;
+	p->first = NULL;
+	p->last = NULL;
 
 	return p;
 }
@@ -38,28 +35,30 @@ int insert_node(HEAD *head, NODE *act, void *data) //Insert node after Act(ual)-
 {
 	NODE *p;
 
-	if(isfirst_node(head))
-	{
-		head->first->data = data;
-		return EXIT_SUCCESS;
-	}
-
 	if((p =  new_node()) == NULL) return EXIT_FAILURE;
 
-	p->prev = act;
-	p->next = act->next;
-
-	if(act->next != NULL)
+	if(isfirst_node(head))
 	{
-		p->next->prev = p;
+		head->first = p;
+		head->last = p;
+		p->data = data;
+
 	}else
 	{
-		head->last = p;
+		p->prev = act;
+		p->next = act->next;
+
+		if(act->next != NULL)
+		{
+			p->next->prev = p;
+		}else
+		{
+			head->last = p;
+		}
+
+		act->next = p;
+		p->data = data;
 	}
-
-	act->next = p;
-	p->data = data;
-
 	head->length ++;
 
 	return EXIT_SUCCESS;
@@ -69,20 +68,21 @@ int append_back(HEAD *head, void *data) //Appends Node at back end of the list
 
 	NODE *p;
 
-	if(isfirst_node(head))
-	{
-		head->first->data = data;
-		return EXIT_SUCCESS;
-	}
-
 	if((p =  new_node()) == NULL) return EXIT_FAILURE;
 
-	p->prev = head->last;
-	head->last->next = p;
-	head->last = p;
-	p->data = data;
-
-	head->length +=1;
+	if(isfirst_node(head))
+	{
+		head->first = p;
+		head->last = p;
+		p->data = data;
+	}else
+	{
+		p->prev = head->last;
+		head->last->next = p;
+		head->last = p;
+		p->data = data;
+	}
+	head->length ++;
 
 	return EXIT_SUCCESS;
 }
@@ -90,19 +90,20 @@ int append_front(HEAD *head, void *data)	//Appends Node at front of the list
 {
 	NODE *p;
 
-	if(isfirst_node(head))
-	{
-		head->first->data = data;
-		return EXIT_SUCCESS;
-	}
-
 	if((p = new_node()) == NULL) return EXIT_FAILURE;
 
-	p->next = head->first;
-	head->first->prev = p;
-	head->first = p;
-	p->data = data;
-
+	if(isfirst_node(head))
+	{
+		head->first = p;
+		head->last = p;
+		p->data = data;
+	}else
+	{
+		p->next = head->first;
+		head->first->prev = p;
+		head->first = p;
+		p->data = data;
+	}
 	head->length ++;
 
 	return EXIT_SUCCESS;
@@ -121,29 +122,31 @@ void print_list(HEAD *head)	//prints whole list
 	printf("First:   %p\n",head->first);
 	printf("Last:   %p\n",head->last);
 	printf("Length:   %d\n\n",head->length);
-
-	while(p->next != NULL)
+	if(head->length != 0)
 	{
+		while(p->next != NULL)
+		{
+
+			printf("----- NODE - %d -----\n",i);
+			printf("Adress: %p\n",p);
+			printf("Next:   %p\n",p->next);
+			printf("Prev:   %p\n",p->prev);
+			printf("Data:   %p\n\n",p->data);
+
+			p = p->next;
+			i ++;
+		}
 
 		printf("----- NODE - %d -----\n",i);
 		printf("Adress: %p\n",p);
 		printf("Next:   %p\n",p->next);
 		printf("Prev:   %p\n",p->prev);
 		printf("Data:   %p\n\n",p->data);
-
-		p = p->next;
-		i ++;
 	}
-
-	printf("----- NODE - %d -----\n",i);
-	printf("Adress: %p\n",p);
-	printf("Next:   %p\n",p->next);
-	printf("Prev:   %p\n",p->prev);
-	printf("Data:   %p\n\n",p->data);
 }
 int isfirst_node(HEAD *head)	//Check if there is only one empty node in list. Like the situation after init_list
 {
-	if((head->first == head->last) && (head->first->data == NULL)) return 1;
+	if(head->length == 0) return 1;
 
 	return 0;
 }
@@ -168,6 +171,8 @@ int del_node(HEAD *head, NODE *act)	//Delete act(ual) node and set the corect po
 		act->next->prev = act->prev;
 		act->prev->next = act->next;
 	}
+
+	free(act);
 
 	head->length --;
 

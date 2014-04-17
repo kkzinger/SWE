@@ -28,19 +28,19 @@ int main(int argc,char **argv)
 
 	for(i=1;i<argc;i++)
 	{
-		if(strcmp(argv[i],"-f") == 0)
+		if(strcmp(argv[i],"-f") == 0) //Sourcefile path
 		{
 			i++;
 			filepath_source = (char*) malloc(strlen(argv[i]));
 			filepath_source = argv[i];
 
-		}else if(strcmp(argv[i],"-s") == 0)
+		}else if(strcmp(argv[i],"-s") == 0) //Encode Modus 
 		{
 			i++;
 			shift_len = atoi(argv[i]) % 26;
 			modus = 0;
 
-		}else if(strcmp(argv[i],"-d") == 0)
+		}else if(strcmp(argv[i],"-d") == 0) //Decode Modus
 		{
 			i++;
 			shift_len = 0;
@@ -53,7 +53,7 @@ int main(int argc,char **argv)
 
 	fp_source = fopen(filepath_source, "r");
 
-	if(modus == 0)
+	if(modus == 0) //Encode
 	{
 		strcpy(filepath_result,"encoded.txt");
 		fp_result = fopen(filepath_result, "w");
@@ -77,7 +77,7 @@ int main(int argc,char **argv)
 			fputc(d,fp_result);
 		}
 
-	}else if(modus == 1)
+	}else if(modus == 1) //Decode
 	{
 		strcpy(filepath_result,"result_decode.txt");
 

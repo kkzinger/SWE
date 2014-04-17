@@ -58,7 +58,7 @@ int main()
 	}
 
 
-	print_list(head);
+//	print_list(head);
 	append_front(head,ptra);
 	print_list(head);
 	append_back(head,ptrb);

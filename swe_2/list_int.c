@@ -78,15 +78,14 @@
 		{
 			n->data = d;
 			xyz->first = xyz->last = n;
-			xyz->length ++;
-			return EXIT_SUCCESS;
+		}else
+		{
+			n->prev = NULL;
+			n->next = xyz->first;
+			n->data = d;
+			xyz->first->prev = n;
+			xyz->first = n;
 		}
-
-		n->prev = NULL;
-		n->next = xyz->first;
-		n->data = d;
-		xyz->first->prev = n;
-		xyz->first = n;
 
 		xyz->length ++;
 		return EXIT_SUCCESS;
