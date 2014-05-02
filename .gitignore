@@ -1,0 +1,6 @@
+*.o
+*.mk
+*.d
+02_count_words
+*_out.txt
+
