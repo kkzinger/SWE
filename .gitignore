@@ -24,3 +24,5 @@
 
 # Else
 *.mk
+*.d
+*_out.txt
