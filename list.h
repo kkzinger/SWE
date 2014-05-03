@@ -42,10 +42,10 @@ typedef struct list_head {
 
 
 S_LIST * new_list();
-int insert_first (S_LIST * , char *);
-int insert_last (S_LIST *, char *);
-int delete_first (S_LIST *);
-int delete_last (S_LIST *);
+int insert_first(S_LIST * , char *);
+int insert_last(S_LIST *, char *);
+int delete_first(S_LIST *);
+int delete_last(S_LIST *);
 
 
 #endif /* LIST_H_ */

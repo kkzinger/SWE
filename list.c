@@ -59,6 +59,8 @@ int insert_first(S_LIST *list, char *to_insert){
 	return EXIT_SUCCESS;
 }
 
+
+
 int insert_last (S_LIST *list, char *to_insert){
 
 	S_ELEM *new = (S_ELEM *)malloc(sizeof(S_ELEM));	/* create new list-element */

@@ -152,11 +152,11 @@ void save_to_list(void *string_list, char *to_save, FILE *fp){
 		incr_in_list(string_list, to_save);
 	}else{
 		printf("\nelse");
-		//printf("\n%p %p %d", ((S_LIST*)string_list)->first, ((S_LIST*)string_list)->last, ((S_LIST*)string_list)->num_Elemtents++);
-		//insert_first((S_LIST*)string_list, to_save);
+		printf("\n%p %p %d", ((S_LIST*)string_list)->first, ((S_LIST*)string_list)->last, ((S_LIST*)string_list)->num_Elemtents++);
+		status = insert_first(string_list, to_save);
 	}
 
-	write_to_file(fp, to_save,  status);
+	//write_to_file(fp, to_save,  status);
 }
 
 
