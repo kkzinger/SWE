@@ -26,3 +26,5 @@
 *.mk
 *.d
 *_out.txt
+*.project   #Eclipse
+*.cproject  #Eclipse
