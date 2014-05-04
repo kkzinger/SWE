@@ -31,7 +31,7 @@ int txt_analyse(HEAD *head, char *file_path);
 int main(int argc, char **argv)
 {
 	int i, modus=0;
-	char *filepath_source,*filepath_result;
+	char *filepath_source = NULL,*filepath_result = NULL;
 	HEAD *list_pt;
 	//Read programm parameters
 
@@ -136,16 +136,33 @@ int txt_analyse(HEAD *head, char *file_path)
 	free(buf);
 	return EXIT_SUCCESS;
 }
-int print_result(HEAD *head, int modus)
+int print_result(HEAD *head, int modus, char *path) //Print Function, modus 0 - print in File modus - 1 print in stdout
 {
 	NODE *p;
+	FILE *fp, *output = stdout;
 
 	p = head->first;
-	
+
+	if(modus == 0)
+	{
+		if(path != NULL)
+		{
+			fopen(fp,path,"w");
+		}else
+		{
+			fopen(fp,"txt_result.txt","w");
+		}
+		output = fp;
+	}
+
+
+	while(p-next != NULL)
+	{
+		//fprintf(output,"%s: %d\n",
+
+	}
 
 
 	return EXIT_SUCCESS;
 }
-
-
 
