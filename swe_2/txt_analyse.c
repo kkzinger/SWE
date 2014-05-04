@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUFF_SIZE 1000
+#define BUFF_SIZE 10000
 
 struct word_stat
 {
@@ -45,17 +45,42 @@ int main(int argc, char **argv)
         {
                 if(strcmp(argv[i],"-f") == 0) //Sourcefile path
                 {
-                        i++;
-                        filepath_source = (char*) malloc(strlen(argv[i]));
-                        filepath_source = argv[i];
+			filepath_source = (char*) malloc(strlen(argv[i]));
+
+                        if(i+1 < argc)
+			{
+				i++;
+				filepath_source = argv[i];
+			}else
+			{
+		                fprintf(stderr,"To few arguments for option '-f'!");
+			}
 
                 }else if(strcmp(argv[i],"-o") == 0) //Option if Output should be stored in File
                 {
-                        i++;
                         filepath_result = (char*) malloc(strlen(argv[i]));
-                        filepath_result = argv[i];
                         modus = 1;
 
+                        if(i+1 < argc)
+			{
+				i++;
+				filepath_result = argv[i];
+			}else
+			{
+				strcpy(filepath_result,"output.txt");
+			}
+
+                }else if(strcmp(argv[i],"--help") == 0) //Option that show help text
+                {
+                        printf("\n\n-- txt_analyse -- \n  is designed to provide a List of the words contained in a Text and how often they appear.\n");
+			printf("\n\nOPTIONS\n");
+			printf("   -f path of textfile wich should be analysed\n");
+			printf("   -o path of the output file where results will be stored\n");
+			printf("\n\n   if there is no name present after -o the standard output file is 'output.txt'\n");
+			printf("   if option '-o' is not provided output will be on 'stdout'\n");
+			printf("\nEXAMPLE\n");
+			printf("   ./txt_analyse -f input_text.txt -o result.txt\n\n\n");
+			return EXIT_SUCCESS;
                 }
 
         }
@@ -71,8 +96,11 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	print_list(list_pt);
+//	print_list(list_pt);
 
+	print_result(list_pt,modus,filepath_result);
+
+	del_list(list_pt);
 	return EXIT_SUCCESS;
 }
 
@@ -80,7 +108,7 @@ int txt_analyse(HEAD *head, char *file_path)
 {
 	FILE *fp;
 	char *buf,*buf_ptr;
-	char delimiter[] = " ., :;";
+	char delimiter[] = " -().,:;?\"»«";
 	int flag = 0, first_run;
 	size_t len;
 	WSTAT *data_ptr;
@@ -104,7 +132,7 @@ int txt_analyse(HEAD *head, char *file_path)
 
 			if(first_run != 1)
 			{
-				printf("head->first: %p\n",head->first);
+				//printf("head->first: %p\n",head->first);
 				node_ptr = head->first;
 				do
 				{
@@ -136,30 +164,31 @@ int txt_analyse(HEAD *head, char *file_path)
 	free(buf);
 	return EXIT_SUCCESS;
 }
-int print_result(HEAD *head, int modus, char *path) //Print Function, modus 0 - print in File modus - 1 print in stdout
+int print_result(HEAD *head, int modus, char *path) //Print Function, modus 1 - print in File modus - 0 print in stdout
 {
 	NODE *p;
 	FILE *fp, *output = stdout;
 
 	p = head->first;
 
-	if(modus == 0)
+	if(modus == 1)
 	{
 		if(path != NULL)
 		{
-			fopen(fp,path,"w");
+			fp = fopen(path,"w");
 		}else
 		{
-			fopen(fp,"txt_result.txt","w");
+			fp = fopen("txt_result.txt","w");
 		}
 		output = fp;
 	}
 
 
-	while(p-next != NULL)
+	while(p->next != NULL)
 	{
-		//fprintf(output,"%s: %d\n",
-
+		fprintf(output,"%-25s:| %.0f|\n",((WSTAT *)p->data)->word,((WSTAT *)p->data)->cnt);
+		fprintf(output,"------------------------------\n");
+		p = p->next;
 	}
 
 
